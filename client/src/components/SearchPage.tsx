@@ -111,8 +111,24 @@ const SearchPage = () => {
                       </p>
                     </div>
 
-                    <div className="flex gap-2 mt-4 flex-wrap"></div>
+                    <div className="flex gap-2 mt-4 flex-wrap">
+                      {["Thali", "SoyaChaap"].map(
+                        (cuisine: string, idx: number) => (
+                          <Badge
+                            key={idx}
+                            className="font-medium px-2 py-1 rounded-full shadow-sm"
+                          >
+                            {cuisine}
+                          </Badge>
+                        )
+                      )}
+                    </div>
                   </CardContent>
+                  <CardFooter className="p-4 border-t dark:border-t-gray-700 border-t-gray-100 text-white flex justify-end">
+                    <Link to={`/restaurant/${2}`}>
+                      <Button>View Menus</Button>
+                    </Link>
+                  </CardFooter>
                 </Card>
               ))
             )}
