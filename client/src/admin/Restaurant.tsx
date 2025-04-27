@@ -2,10 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
+import {
+  RestaurantFormSchemaType,
+  restaurantFormSchema,
+} from "@/schema/restaurantSchema";
 
 const Restaurant = () => {
-  const [input, setInput] = useState({
+  const [input, setInput] = useState<RestaurantFormSchemaType>({
     restaurantName: "",
     city: "",
     country: "",
@@ -17,6 +21,8 @@ const Restaurant = () => {
   const loading = false;
   const restaurant = false;
 
+  const [errors, setErrors] = useState<Partial<RestaurantFormSchemaType>>({});
+
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
 
@@ -25,6 +31,15 @@ const Restaurant = () => {
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const result = restaurantFormSchema.safeParse(input);
+
+    if (!result.success) {
+      const fieldErrors = result.error.formErrors.fieldErrors;
+      setErrors(fieldErrors as Partial<RestaurantFormSchemaType>);
+      return;
+    }
+
+    // add restaurant api implementation start from here
   };
 
   return (
@@ -43,11 +58,11 @@ const Restaurant = () => {
                   name="restaurantName"
                   placeholder="Enter your restaurant name"
                 />
-                {/* {errors && (
+                {errors && (
                   <span className="text-xs text-red-600 font-medium">
                     {errors.restaurantName}
                   </span>
-                )} */}
+                )}
               </div>
 
               <div>
@@ -59,11 +74,11 @@ const Restaurant = () => {
                   name="city"
                   placeholder="Enter your city name"
                 />
-                {/* {errors && (
+                {errors && (
                   <span className="text-xs text-red-600 font-medium">
                     {errors.city}
                   </span>
-                )} */}
+                )}
               </div>
 
               <div>
@@ -75,11 +90,11 @@ const Restaurant = () => {
                   name="country"
                   placeholder="Enter your country name"
                 />
-                {/* {errors && (
+                {errors && (
                   <span className="text-xs text-red-600 font-medium">
                     {errors.country}
                   </span>
-                )} */}
+                )}
               </div>
               <div>
                 <Label>Delivery Time</Label>
@@ -90,11 +105,11 @@ const Restaurant = () => {
                   name="deliveryTime"
                   placeholder="Enter your delivery time"
                 />
-                {/* {errors && (
+                {errors && (
                   <span className="text-xs text-red-600 font-medium">
                     {errors.deliveryTime}
                   </span>
-                )} */}
+                )}
               </div>
               <div>
                 <Label>Cuisines</Label>
@@ -125,11 +140,11 @@ const Restaurant = () => {
                     });
                   }}
                 />
-                {/* {errors && (
+                {errors && (
                   <span className="text-xs text-red-600 font-medium">
                     {errors.imageFile?.name}
                   </span>
-                )} */}
+                )}
               </div>
             </div>
 
