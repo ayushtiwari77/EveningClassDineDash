@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import morgan from "morgan";
+import userRoute from "./routes/user.route";
 
 dotenv.config();
 const app = express();
@@ -28,6 +29,9 @@ app.use(cors(corsOptions));
 app.get("/", (req: Request, res: Response) => {
   res.send("server is running🎉🎉");
 });
+
+//api
+app.use("/api/v1/user", userRoute);
 
 //listening to the server
 app.listen(port, () => {
