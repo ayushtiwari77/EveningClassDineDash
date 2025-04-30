@@ -5,6 +5,12 @@ import { generateVerificationCode } from "../utils/generateVerificationTokenCode
 import { generateToken } from "../utils/generateToken";
 import crypto from "crypto";
 import cloudinary from "../utils/cloudinary";
+import {
+  sendVerificationEmail,
+  sendWelcomeEmail,
+  sendPasswordResetEmail,
+  sendResetSuccessEmail,
+} from "../mailtrap/email";
 
 export const signup = async (req: Request, res: Response): Promise<any> => {
   try {
@@ -31,7 +37,7 @@ export const signup = async (req: Request, res: Response): Promise<any> => {
 
     generateToken(res, user);
 
-    // email bhejenge verificatio ncode waala
+    sendVerificationEmail(email, verificationToken);
 
     const userWithoutPassword = await User.findOne({ email }).select(
       "-password"
@@ -116,6 +122,7 @@ export const verifyEmail = async (
     await user.save();
 
     //send welcome email
+    sendWelcomeEmail(user.email, user.fullname);
 
     return res.status(200).json({
       success: true,
@@ -167,6 +174,10 @@ export const forgotPassword = async (
     await user.save();
 
     //send email
+    sendPasswordResetEmail(
+      email,
+      `${process.env.FRONTEND_URL}/reset-password/${resetToken}`
+    );
 
     return res.status(200).json({
       success: true,
@@ -210,6 +221,7 @@ export const resetPassword = async (
     await user.save();
 
     //send success reset email
+    sendResetSuccessEmail(user.email);
 
     return res.status(200).json({
       success: true,

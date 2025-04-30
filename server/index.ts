@@ -7,6 +7,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import morgan from "morgan";
 import userRoute from "./routes/user.route";
+import restaurantRoute from "./routes/restaurant.route";
 
 dotenv.config();
 const app = express();
@@ -19,7 +20,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(express.json());
 app.use(cookieParser());
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: `${process.env.FRONTEND_URL}`,
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -32,6 +33,7 @@ app.get("/", (req: Request, res: Response) => {
 
 //api
 app.use("/api/v1/user", userRoute);
+app.use("/api/v1/restaurant", restaurantRoute);
 
 //listening to the server
 app.listen(port, () => {
