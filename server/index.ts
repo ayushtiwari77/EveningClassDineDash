@@ -8,6 +8,8 @@ import cors from "cors";
 import morgan from "morgan";
 import userRoute from "./routes/user.route";
 import restaurantRoute from "./routes/restaurant.route";
+import orderRoute from "./routes/order.route";
+import menuRoute from "./routes/menu.route";
 
 dotenv.config();
 const app = express();
@@ -34,6 +36,8 @@ app.get("/", (req: Request, res: Response) => {
 //api
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/restaurant", restaurantRoute);
+app.use("/api/v1/menu", menuRoute);
+app.use("/api/v1/order", orderRoute);
 
 //listening to the server
 app.listen(port, () => {

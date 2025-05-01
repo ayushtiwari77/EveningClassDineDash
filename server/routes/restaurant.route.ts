@@ -9,11 +9,17 @@ import {
   updateRestaurant,
 } from "../controllers/restaurant.controller";
 import { isAuthenticated } from "../middlewares/isAuthenticated";
+import upload from "../middlewares/multer";
 
 const router = express.Router();
-//create and update baacha hai
 
+router
+  .route("/")
+  .post(isAuthenticated, upload.single("imageFile"), createRestaurant);
 router.route("/").get(isAuthenticated, getRestaurant);
+router
+  .route("/")
+  .put(isAuthenticated, upload.single("imageFile"), updateRestaurant);
 router.route("/order").get(isAuthenticated, getRestaurantOrder);
 router.route("/order/:orderId/status").put(isAuthenticated, updateOrderStatus);
 router.route("/search/:searchText").get(isAuthenticated, searchRestaurant);
