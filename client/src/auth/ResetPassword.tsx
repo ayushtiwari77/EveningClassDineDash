@@ -1,13 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useUserStore } from "@/store/useUserStore";
 import { Loader2, LockKeyholeIcon } from "lucide-react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState<string>("");
-  const loading = false;
-  const handleSubmit = async () => {};
+  const { code } = useParams();
+  const { resetPassword, loading } = useUserStore();
+  const navigate = useNavigate();
+  const handleSubmit = async () => {
+    try {
+      resetPassword(code as string, newPassword);
+      navigate("/login");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full">

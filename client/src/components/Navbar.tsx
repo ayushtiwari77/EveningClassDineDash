@@ -37,9 +37,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "./ui/sheet";
+import { useUserStore } from "@/store/useUserStore";
 
 const Navbar = () => {
-  const loading = false;
+  const { loading, logout } = useUserStore();
   const admin = true;
   const cart = [1, 2, 3];
 
@@ -119,7 +120,10 @@ const Navbar = () => {
                   Please wait
                 </Button>
               ) : (
-                <Button className="bg-orange hover:bg-hoverOrange">
+                <Button
+                  onClick={logout}
+                  className="bg-orange hover:bg-hoverOrange"
+                >
                   Logout
                 </Button>
               )}
@@ -138,7 +142,7 @@ const Navbar = () => {
 export default Navbar;
 
 const MobileNavbar = () => {
-  const loading = false;
+  const { loading, logout } = useUserStore();
   const admin = true;
 
   return (
@@ -238,7 +242,12 @@ const MobileNavbar = () => {
                 Please wait
               </Button>
             ) : (
-              <Button className="bg-orange hover:bg-hoverOrange">Logout</Button>
+              <Button
+                onClick={logout}
+                className="bg-orange hover:bg-hoverOrange"
+              >
+                Logout
+              </Button>
             )}
           </SheetClose>
         </SheetFooter>

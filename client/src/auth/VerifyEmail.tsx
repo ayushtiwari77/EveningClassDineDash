@@ -2,11 +2,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import React, { FormEvent, useRef, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useUserStore } from "@/store/useUserStore";
 
 const VerifyEmail = () => {
   const [otp, setOtp] = useState<string[]>(["", "", "", "", "", ""]);
-  const loading = false;
+
   const inputRef = useRef<(HTMLInputElement | null)[]>([]);
+
+  const navigate = useNavigate();
+  const { loading, verifyEmail } = useUserStore();
 
   const handleChange = (index: number, value: string) => {
     if (/^[a-zA-Z0-9]$/.test(value) || value === "") {
@@ -32,6 +37,13 @@ const VerifyEmail = () => {
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //api implementation
+    try {
+      const verificationCode = otp.join("");
+      await verifyEmail(verificationCode);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

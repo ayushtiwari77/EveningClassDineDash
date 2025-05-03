@@ -5,14 +5,17 @@ import { Separator } from "@/components/ui/separator";
 import { Link } from "react-router-dom";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { userLoginSchema, LoginInputState } from "@/schema/userSchema";
+import { useUserStore } from "@/store/useUserStore";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [input, setInput] = useState<LoginInputState>({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
   const [errors, setErrors] = useState<Partial<LoginInputState>>({});
-  const loading = false;
+  const { loading, login } = useUserStore();
 
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,6 +33,12 @@ const Login = () => {
     }
 
     //api implementaion
+    try {
+      await login(input);
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

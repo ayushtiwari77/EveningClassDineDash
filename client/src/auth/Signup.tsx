@@ -5,16 +5,17 @@ import { Separator } from "@/components/ui/separator";
 import { Link, useNavigate } from "react-router-dom";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { SignupInputState, userSignupSchema } from "@/schema/userSchema";
+import { useUserStore } from "@/store/useUserStore";
 
 const Signup = () => {
-  const loading = false;
-
   const [input, setInput] = useState<SignupInputState>({
     email: "",
     password: "",
     fullname: "",
     contact: "",
   });
+  const { loading, signup } = useUserStore();
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState<Partial<SignupInputState>>({});
 
@@ -34,6 +35,13 @@ const Signup = () => {
     }
 
     //api implementaion
+
+    try {
+      await signup(input);
+      navigate("/verify-email");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

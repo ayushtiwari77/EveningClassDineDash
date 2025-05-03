@@ -11,15 +11,17 @@ import { FormEvent, useRef, useState } from "react";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
+import { useUserStore } from "@/store/useUserStore";
 
 const Profile = () => {
+  const { user, updateProfile } = useUserStore();
   const [profileData, setProfileData] = useState({
-    fullname: "",
-    email: "",
-    address: "",
-    city: "",
-    country: "",
-    profilePicture: "",
+    fullname: user?.fullname || "",
+    email: user?.email || "",
+    address: user?.address || "",
+    city: user?.city || "",
+    country: user?.country || "",
+    profilePicture: user?.profilePicture || "",
   });
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -45,9 +47,23 @@ const Profile = () => {
     setProfileData({ ...profileData, [name]: value });
   };
 
-  const updateProfileHandler = (e: FormEvent<HTMLFormElement>) => {
+  const updateProfileHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     //api implementation
+
+    try {
+      setIsLoading(true);
+
+      await updateProfile({
+        ...profileData,
+        profilePicture: selectedProfilePicture,
+      });
+
+      setIsLoading(false);
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -55,7 +71,7 @@ const Profile = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Avatar className="relative md:w-28 w-20 h-20">
-            <AvatarImage src={selectedProfilePicture} alt="profile pic" />
+            <AvatarImage src={profileData.profilePicture} alt="profile pic" />
             <AvatarFallback>AT</AvatarFallback>
             <input
               ref={imageRef}
