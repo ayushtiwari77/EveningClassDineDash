@@ -40,8 +40,8 @@ import {
 import { useUserStore } from "@/store/useUserStore";
 
 const Navbar = () => {
-  const { loading, logout } = useUserStore();
-  const admin = true;
+  const { loading, logout, user } = useUserStore();
+
   const cart = [1, 2, 3];
 
   return (
@@ -57,7 +57,7 @@ const Navbar = () => {
             <Link to="/profile">Profile</Link>
             <Link to="/order/status">Order</Link>
 
-            {admin && (
+            {user?.admin && (
               <Menubar>
                 <MenubarMenu>
                   <MenubarTrigger>Dashboard</MenubarTrigger>
@@ -108,7 +108,7 @@ const Navbar = () => {
 
             <div>
               <Avatar>
-                <AvatarImage src="" alt="profilePhoto" />
+                <AvatarImage src={user?.profilePicture} alt="profilePhoto" />
                 <AvatarFallback>AT</AvatarFallback>
               </Avatar>
             </div>
@@ -142,8 +142,7 @@ const Navbar = () => {
 export default Navbar;
 
 const MobileNavbar = () => {
-  const { loading, logout } = useUserStore();
-  const admin = true;
+  const { loading, logout, user } = useUserStore();
 
   return (
     <Sheet>
@@ -200,7 +199,7 @@ const MobileNavbar = () => {
             <span>Cart (0)</span>
           </Link>
 
-          {admin && (
+          {user?.admin && (
             <>
               <Link
                 to="/admin/menu"
@@ -230,10 +229,10 @@ const MobileNavbar = () => {
         <SheetFooter className="flex flex-row items-center gap-2">
           <div className="flex flex-row items-center gap-2">
             <Avatar>
-              <AvatarImage src="" />
+              <AvatarImage src={user?.profilePicture} alt="profile of user" />
               <AvatarFallback>AT</AvatarFallback>
             </Avatar>
-            <h1 className="font-bold">{"Ayush Tiwari"}</h1>
+            <h1 className="font-bold">{user?.fullname}</h1>
           </div>
           <SheetClose asChild>
             {loading ? (

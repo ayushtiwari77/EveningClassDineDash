@@ -71,7 +71,7 @@ const Profile = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Avatar className="relative md:w-28 w-20 h-20">
-            <AvatarImage src={profileData.profilePicture} alt="profile pic" />
+            <AvatarImage src={user?.profilePicture} alt="profile pic" />
             <AvatarFallback>AT</AvatarFallback>
             <input
               ref={imageRef}
