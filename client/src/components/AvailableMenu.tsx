@@ -2,15 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardFooter } from "./ui/card";
 
-type MenuType = {
-  _id: string;
-  image: string;
-  name: string;
-  price: string;
-  description: string;
-};
+import { MenuItem } from "@/types/restaurantType";
 
-const AvailableMenu = ({ menus }: { menus: MenuType[] }) => {
+const AvailableMenu = ({ menus }: { menus: MenuItem[] }) => {
   const navigate = useNavigate();
 
   return (
@@ -19,7 +13,7 @@ const AvailableMenu = ({ menus }: { menus: MenuType[] }) => {
         Available Menus
       </h1>
       <div className="grid lg:grid-cols-3 space-y-4 lg:space-y-0 ">
-        {menus.map((menu: MenuType) => (
+        {menus.map((menu: MenuItem) => (
           <Card
             key={menu._id}
             className="max-w-xs mx-auto shadow-lg rounded-lg overflow-hidden"

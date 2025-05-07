@@ -14,9 +14,10 @@ import { Label } from "@/components/ui/label";
 import { Loader2, Plus } from "lucide-react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { MenuFormSchemaType, menuSchema } from "@/schema/menuSchema";
-
-import HeroImage from "@/assets/pizza.png";
 import EditMenu from "./EditMenu";
+import { useRestaurantStore } from "@/store/useRestaurantStore";
+import { MenuItem } from "@/types/restaurantType";
+import { useMenuStore } from "@/store/useMenuStore";
 
 const AddMenu = () => {
   const [input, setInput] = useState<MenuFormSchemaType>({
@@ -30,31 +31,32 @@ const AddMenu = () => {
 
   const [selectedMenu, setSelectedMenu] = useState<any>({});
   const [error, setError] = useState<Partial<MenuFormSchemaType>>({});
-  const loading = false;
+  const { restaurant } = useRestaurantStore();
+  const { loading, createMenu } = useMenuStore();
 
-  const menus: MenuFormSchemaType[] = [
-    {
-      name: "Birayani",
-      description:
-        "asdkjf;akjsdf;lkajsd;lfkjasdkjflasdfffffffffasdfasdfasdfasdf asdfa sdf asdf asdf asdf asdf",
-      price: 80,
-      image: undefined,
-    },
-    {
-      name: "Soya Chaap",
-      description:
-        "asdkjf;akjsdf;lkajsd;lfkjasdkjflasdfffffffffasdfasdfasdfasdf asdfa sdf asdf asdf asdf asdf",
-      price: 80,
-      image: undefined,
-    },
-  ];
+  // const menus: MenuFormSchemaType[] = [
+  //   {
+  //     name: "Birayani",
+  //     description:
+  //       "asdkjf;akjsdf;lkajsd;lfkjasdkjflasdfffffffffasdfasdfasdfasdf asdfa sdf asdf asdf asdf asdf",
+  //     price: 80,
+  //     image: undefined,
+  //   },
+  //   {
+  //     name: "Soya Chaap",
+  //     description:
+  //       "asdkjf;akjsdf;lkajsd;lfkjasdkjflasdfffffffffasdfasdfasdfasdf asdfa sdf asdf asdf asdf asdf",
+  //     price: 80,
+  //     image: undefined,
+  //   },
+  // ];
 
   const changeEventHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value, type } = e.target;
     setInput({ ...input, [name]: type === "number" ? Number(value) : value });
   };
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+  const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const result = menuSchema.safeParse(input);
@@ -66,6 +68,19 @@ const AddMenu = () => {
     }
 
     //api implementation from here
+
+    try {
+      const formData = new FormData();
+      formData.append("name", input.name);
+      formData.append("description", input.description);
+      formData.append("price", input.price.toString());
+      if (input.image) {
+        formData.append("image", input.image);
+      }
+      await createMenu(formData);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -170,11 +185,11 @@ const AddMenu = () => {
         </Dialog>
       </div>
 
-      {menus.map((menu, idx: number) => (
+      {restaurant?.menus.map((menu: MenuItem, idx: number) => (
         <div key={idx} className="mt-6 space-y-4">
           <div className="flex flex-col md:flex-row md:items-center md:space-x-4 md:p-4 p-2 shadow-md rounded-lg border">
             <img
-              src={HeroImage}
+              src={`${menu.image}`}
               alt="menu image"
               className="md:h-24 md:w-24 h-16 w-full object-cover rounded-lg"
             />

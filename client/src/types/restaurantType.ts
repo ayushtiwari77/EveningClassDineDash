@@ -42,9 +42,9 @@ export type RestaurantState = {
   ) => Promise<void>;
   addMenuToRestaurant: (menu: MenuItem) => void;
   updateMenuToRestaurant: (menu: MenuItem) => void;
-  // setAppliedFilter: (value: string) => void;
-  // resetAppliedFilter: () => void;
-  // getSingleRestaurant: (restaurantId: string) => Promise<void>;
-  // getRestaurantOrders: () => Promise<void>;
-  // updateRestaurantOrder: (orderId: string, status: string) => Promise<void>;
+  setAppliedFilter: (value: string) => void;
+  resetAppliedFilter: () => void;
+  getSingleRestaurant: (restaurantId: string) => Promise<void>;
+  getRestaurantOrders: () => Promise<void>;
+  updateRestaurantOrder: (orderId: string, status: string) => Promise<void>;
 };
