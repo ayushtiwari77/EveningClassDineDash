@@ -38,11 +38,13 @@ import {
   SheetTrigger,
 } from "./ui/sheet";
 import { useUserStore } from "@/store/useUserStore";
+import { useCartStore } from "@/store/useCartStore";
+import { useThemeStore } from "@/store/useThemeStore";
 
 const Navbar = () => {
   const { loading, logout, user } = useUserStore();
-
-  const cart = [1, 2, 3];
+  const { cart } = useCartStore();
+  const { setTheme } = useThemeStore();
 
   return (
     <div className="max-w-7xl mx-auto">
@@ -88,8 +90,12 @@ const Navbar = () => {
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                  <DropdownMenuItem>Light</DropdownMenuItem>
-                  <DropdownMenuItem>Dark</DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("light")}>
+                    Light
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => setTheme("dark")}>
+                    Dark
+                  </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
@@ -143,6 +149,8 @@ export default Navbar;
 
 const MobileNavbar = () => {
   const { loading, logout, user } = useUserStore();
+  const { cart } = useCartStore();
+  const { setTheme } = useThemeStore();
 
   return (
     <Sheet>
@@ -168,8 +176,12 @@ const MobileNavbar = () => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>Light</DropdownMenuItem>
-              <DropdownMenuItem>Dark</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("light")}>
+                Light
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
+                Dark
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </SheetHeader>
@@ -196,7 +208,7 @@ const MobileNavbar = () => {
             className="flex items-center gap-4 hover:bg-gray-200 px-3 py-2 rounded-lg cursor-pointer hover:text-gray-900 font-medium"
           >
             <ShoppingCart />
-            <span>Cart (0)</span>
+            <span>Cart ({cart.length})</span>
           </Link>
 
           {user?.admin && (
