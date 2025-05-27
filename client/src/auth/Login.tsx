@@ -115,7 +115,10 @@ const Login = () => {
           )}
 
           {loading ? (
-            <Button disabled className="w-full bg-orange hover:bg-hoverOrange">
+            <Button
+              disabled
+              className="w-full bg-orange hover:bg-hoverOrange mt-5"
+            >
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Please wait
             </Button>
@@ -123,7 +126,7 @@ const Login = () => {
             <Button
               type="button"
               onClick={handleGuestLogin}
-              className="w-full bg-orange hover:bg-hoverOrange"
+              className="w-full bg-orange hover:bg-hoverOrange mt-5"
             >
               Guest Login
             </Button>
