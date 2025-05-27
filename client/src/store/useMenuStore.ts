@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { useRestaurantStore } from "./useRestaurantStore";
 
-const API_END_POINT = `http://localhost:8000/api/v1/menu`;
+const API_END_POINT = `https://premiumdinedash.onrender.com/api/v1/menu`;
 axios.defaults.withCredentials = true;
 
 type MenuState = {
